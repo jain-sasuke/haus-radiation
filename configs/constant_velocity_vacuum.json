@@ -1,0 +1,29 @@
+{
+  "case_name": "constant_velocity_vacuum",
+  "trajectory": {
+    "type": "constant_velocity_z",
+    "params": {
+      "beta": 0.8
+    }
+  },
+  "medium": {
+    "kind": "vacuum",
+    "params": {}
+  },
+  "solver": {
+    "T": 60.0,
+    "Nt": 1800,
+    "theta_min": 0.0,
+    "theta_max": 1.57079632679,
+    "Ntheta": 121,
+    "omega_min": -6.0,
+    "omega_max": 6.0,
+    "Nomega": 301,
+    "omega_cut": 0.25,
+    "normalize": true
+  },
+  "display": {
+    "title": "Constant velocity in vacuum",
+    "verdict_label": "Radiationless benchmark"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "case_name": "sinusoidal_vacuum",
+  "trajectory": {
+    "type": "sinusoidal_z",
+    "params": {
+      "A": 1.0,
+      "omega0": 1.0
+    }
+  },
+  "medium": {
+    "kind": "vacuum",
+    "params": {}
+  },
+  "solver": {
+    "T": 60.0,
+    "Nt": 1800,
+    "theta_min": 0.0,
+    "theta_max": 1.57079632679,
+    "Ntheta": 121,
+    "omega_min": -6.0,
+    "omega_max": 6.0,
+    "Nomega": 301,
+    "omega_cut": 0.25,
+    "normalize": true
+  },
+  "display": {
+    "title": "Sinusoidal motion in vacuum",
+    "verdict_label": "Radiative benchmark"
+  }
+}

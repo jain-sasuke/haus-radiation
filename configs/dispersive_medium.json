@@ -1,0 +1,33 @@
+{
+  "case_name": "dispersive_medium",
+  "trajectory": {
+    "type": "constant_velocity_z",
+    "params": {
+      "beta": 0.8
+    }
+  },
+  "medium": {
+    "kind": "dispersive_toy",
+    "params": {
+      "n0": 1.35,
+      "a": 0.25,
+      "omega_s": 1.5
+    }
+  },
+  "solver": {
+    "T": 60.0,
+    "Nt": 1800,
+    "theta_min": 0.0,
+    "theta_max": 1.57079632679,
+    "Ntheta": 121,
+    "omega_min": -6.0,
+    "omega_max": 6.0,
+    "Nomega": 301,
+    "omega_cut": 0.25,
+    "normalize": true
+  },
+  "display": {
+    "title": "Constant velocity in dispersive medium",
+    "verdict_label": "Dispersive medium case"
+  }
+}

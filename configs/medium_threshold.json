@@ -1,0 +1,31 @@
+{
+  "case_name": "medium_threshold",
+  "trajectory": {
+    "type": "constant_velocity_z",
+    "params": {
+      "beta": 0.8
+    }
+  },
+  "medium": {
+    "kind": "nondispersive",
+    "params": {
+      "n": 1.5
+    }
+  },
+  "solver": {
+    "T": 60.0,
+    "Nt": 1800,
+    "theta_min": 0.0,
+    "theta_max": 1.57079632679,
+    "Ntheta": 121,
+    "omega_min": -6.0,
+    "omega_max": 6.0,
+    "Nomega": 301,
+    "omega_cut": 0.25,
+    "normalize": true
+  },
+  "display": {
+    "title": "Constant velocity in medium above threshold",
+    "verdict_label": "Threshold directional case"
+  }
+}

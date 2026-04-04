@@ -1,0 +1,19 @@
+{
+  "case_name": "medium_threshold",
+  "trajectory_type": "constant_velocity_z",
+  "medium_kind": "nondispersive",
+  "classification": "directional_threshold_radiation",
+  "display_title": "Constant velocity in medium above threshold",
+  "verdict_label": "Threshold directional case",
+  "radiation_message": "Directional finite-frequency enhancement appears in the medium.",
+  "parameters": {
+    "beta": 0.8,
+    "n": 1.5,
+    "omega_cut": 0.25
+  },
+  "diagnostics": {
+    "finite_frequency_max": 6.962298315490197,
+    "theta_peak_computed": 0.58904862254625,
+    "theta_peak_analytic": 0.5856855434571511
+  }
+}
