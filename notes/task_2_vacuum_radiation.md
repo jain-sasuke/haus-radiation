@@ -70,9 +70,9 @@ Define the computational observables that will be implemented later.
 
 Implement the Fourier-domain source current for 1D motion:
 
-[
-J_z(k_z,\omega)=q\int dt,v(t),e^{-ik_z z(t)}e^{i\omega t}.
-]
+$$
+J_z(k_z,\omega)=q\int dt\,v(t)\,e^{-ik_z z(t)}e^{i\omega t}.
+$$
 
 ### Task 2
 
@@ -85,14 +85,14 @@ Implement two benchmark trajectories:
 
 Plot:
 
-* heatmap of (|J_z(k_z,\omega)|) for constant velocity,
+* heatmap of $|J_z(k_z,\omega)|$ for constant velocity,
 * spectrum for sinusoidal motion.
 
 ### Task 4
 
 Check expected structure:
 
-* constant velocity gives a ridge near (\omega=k_z v),
+* constant velocity gives a ridge near $\omega=k_z v$,
 * sinusoidal motion gives harmonics.
 
 **Exit condition:** the source spectrum behaves as physics predicts.
@@ -105,25 +105,25 @@ Check expected structure:
 
 Implement the vacuum propagating-mode condition:
 
-[
+$$
 \mathbf k = \frac{\omega}{c}\hat{\mathbf n}.
-]
+$$
 
 ### Task 6
 
 Implement the transverse projection:
 
-[
+$$
 \mathbf J_\perp = \hat{\mathbf n}\times(\hat{\mathbf n}\times \mathbf J).
-]
+$$
 
 ### Task 7
 
 Define the numerical radiation observable:
 
-[
+$$
 I(\omega,\hat{\mathbf n}) \propto |\mathbf J_\perp|^2.
-]
+$$
 
 ### Task 8
 
@@ -169,9 +169,9 @@ Document numerical artifacts:
 
 Implement nondispersive medium:
 
-[
-k = n\omega/c.
-]
+$$
+k = \frac{n\omega}{c}.
+$$
 
 ### Task 13
 
@@ -179,7 +179,7 @@ Recover Cherenkov threshold behavior.
 
 ### Task 14
 
-Extend to dispersive medium (n(\omega)).
+Extend to dispersive medium $n(\omega)$.
 
 **Exit condition:** one framework handles vacuum and medium cases.
 
@@ -230,19 +230,19 @@ This section is the filled physics foundation extracted from the paper.
 
 ## 1. Point-charge charge density
 
-For a point charge (q) moving on trajectory (\mathbf r_0(t)), the charge density is
+For a point charge $q$ moving on trajectory $\mathbf r_0(t)$, the charge density is
 
-[
-\rho(\mathbf r,t)=q,\delta!\left(\mathbf r-\mathbf r_0(t)\right).
-]
+$$
+\rho(\mathbf r,t)=q\,\delta\!\left(\mathbf r-\mathbf r_0(t)\right).
+$$
 
 This says the entire charge is concentrated at the instantaneous particle position.
 
 Here:
 
-* (\mathbf r) is the field point,
-* (t) is time,
-* (\mathbf r_0(t)) is the source trajectory.
+* $\mathbf r$ is the field point,
+* $t$ is time,
+* $\mathbf r_0(t)$ is the source trajectory.
 
 This is the starting source description in real space.
 
@@ -252,15 +252,15 @@ This is the starting source description in real space.
 
 The current density for the same moving point charge is
 
-[
-\mathbf J(\mathbf r,t)=q,\mathbf v(t),\delta!\left(\mathbf r-\mathbf r_0(t)\right),
-]
+$$
+\mathbf J(\mathbf r,t)=q\,\mathbf v(t)\,\delta\!\left(\mathbf r-\mathbf r_0(t)\right),
+$$
 
 where
 
-[
+$$
 \mathbf v(t)=\dot{\mathbf r}_0(t).
-]
+$$
 
 This expresses the physically obvious fact that a moving localized charge creates a localized current directed along its instantaneous velocity.
 
@@ -272,22 +272,22 @@ This is the source that enters the wave equation.
 
 Take the spatial Fourier transform of the current density:
 
-[
-\mathbf J(\mathbf k,t)=\int d^3r,\mathbf J(\mathbf r,t)e^{-i\mathbf k\cdot\mathbf r}.
-]
+$$
+\mathbf J(\mathbf k,t)=\int d^3r\,\mathbf J(\mathbf r,t)e^{-i\mathbf k\cdot\mathbf r}.
+$$
 
 Substituting the point-charge form gives
 
-[
-\mathbf J(\mathbf k,t)=q,\mathbf v(t)e^{-i\mathbf k\cdot\mathbf r_0(t)}.
-]
+$$
+\mathbf J(\mathbf k,t)=q\,\mathbf v(t)e^{-i\mathbf k\cdot\mathbf r_0(t)}.
+$$
 
 This is the first key object in the project.
 
 Interpretation:
 
 * the velocity provides the current amplitude,
-* the phase (e^{-i\mathbf k\cdot\mathbf r_0(t)}) encodes the source motion in Fourier space.
+* the phase $e^{-i\mathbf k\cdot\mathbf r_0(t)}$ encodes the source motion in Fourier space.
 
 This is where the trajectory enters the spectral formulation.
 
@@ -297,31 +297,31 @@ This is where the trajectory enters the spectral formulation.
 
 Now take the time Fourier transform:
 
-[
-\mathbf J(\mathbf k,\omega)=\int dt,\mathbf J(\mathbf k,t)e^{i\omega t}.
-]
+$$
+\mathbf J(\mathbf k,\omega)=\int dt\,\mathbf J(\mathbf k,t)e^{i\omega t}.
+$$
 
 Using the previous result,
 
-[
-\mathbf J(\mathbf k,\omega)=q\int dt,\mathbf v(t)e^{-i\mathbf k\cdot\mathbf r_0(t)}e^{i\omega t}.
-]
+$$
+\mathbf J(\mathbf k,\omega)=q\int dt\,\mathbf v(t)e^{-i\mathbf k\cdot\mathbf r_0(t)}e^{i\omega t}.
+$$
 
 This is the main source quantity for the project.
 
-For 1D motion along (z),
+For 1D motion along $z$,
 
-[
+$$
 \mathbf r_0(t)=z(t)\hat z,
 \qquad
 \mathbf v(t)=v(t)\hat z,
-]
+$$
 
 so the relevant scalar component becomes
 
-[
-J_z(k_z,\omega)=q\int dt,v(t)e^{-ik_z z(t)}e^{i\omega t}.
-]
+$$
+J_z(k_z,\omega)=q\int dt\,v(t)e^{-ik_z z(t)}e^{i\omega t}.
+$$
 
 This is exactly what will be implemented in the first code stage.
 
@@ -333,15 +333,13 @@ The paper’s main physical interpretation is that radiation is associated with 
 
 In vacuum, propagating electromagnetic waves satisfy
 
-[
+$$
 k=\omega/c.
-]
+$$
 
-So the radiating part of the source must be examined on the vacuum light cone in ((\mathbf k,\omega))-space.
+So the radiating part of the source must be examined on the vacuum light cone in $(\mathbf k,\omega)$-space.
 
-This is the spectral-selection idea at the core of the paper:
-not every source Fourier component becomes outgoing radiation.
-Only those compatible with real propagating waves do.
+This is the spectral-selection idea at the core of the paper: not every source Fourier component becomes outgoing radiation. Only those compatible with real propagating waves do.
 
 ---
 
@@ -349,11 +347,11 @@ Only those compatible with real propagating waves do.
 
 Far-field radiation depends on the transverse part of the source relative to the propagation direction.
 
-If the observation direction is (\hat{\mathbf n}), then the transverse radiating component is
+If the observation direction is $\hat{\mathbf n}$, then the transverse radiating component is
 
-[
+$$
 \mathbf J_\perp = \hat{\mathbf n}\times(\hat{\mathbf n}\times\mathbf J).
-]
+$$
 
 This removes the longitudinal component and keeps the part compatible with transverse electromagnetic radiation.
 
@@ -370,21 +368,21 @@ This is the quantity we will later use to build radiation intensity maps.
 
 Consider uniform motion:
 
-[
+$$
 \mathbf r_0(t)=\mathbf v t.
-]
+$$
 
 Then
 
-[
-\mathbf J(\mathbf k,\omega)=q\int dt,\mathbf v,e^{-i\mathbf k\cdot\mathbf v t}e^{i\omega t}.
-]
+$$
+\mathbf J(\mathbf k,\omega)=q\int dt\,\mathbf v\,e^{-i\mathbf k\cdot\mathbf v t}e^{i\omega t}.
+$$
 
 This has support where
 
-[
+$$
 \omega=\mathbf k\cdot\mathbf v.
-]
+$$
 
 So the source spectrum lies on that kinematic relation.
 
@@ -398,17 +396,17 @@ This is one of the central physical messages of the paper.
 
 The paper considers an oscillatory trajectory of the form
 
-[
+$$
 z(t)=d\sin(\omega_0 t).
-]
+$$
 
 Then
 
-[
+$$
 v(t)=d\omega_0\cos(\omega_0 t).
-]
+$$
 
-Because the phase factor contains (e^{-ik_z d\sin(\omega_0 t)}), the resulting source spectrum contains harmonic structure. In the analytic treatment, this is naturally expressed through harmonic/Bessel expansions.
+Because the phase factor contains $e^{-ik_z d\sin(\omega_0 t)}$, the resulting source spectrum contains harmonic structure. In the analytic treatment, this is naturally expressed through harmonic/Bessel expansions.
 
 Physical meaning:
 
@@ -422,13 +420,13 @@ This gives us the second benchmark for the forward solver.
 
 ## 9. Medium modification
 
-In a medium, the propagating-wave condition changes because the phase velocity differs from (c).
+In a medium, the propagating-wave condition changes because the phase velocity differs from $c$.
 
 In the simplest refractive-index description,
 
-[
-k = n(\omega),\omega/c.
-]
+$$
+k = n(\omega)\,\omega/c.
+$$
 
 This changes the spectral matching condition between the source and the allowed propagating modes.
 
@@ -447,18 +445,18 @@ The physics above defines the observables for later coding.
 
 ### Phase 1 observables
 
-* (J_z(k_z,\omega)) for 1D motion,
-* heatmap of (|J_z(k_z,\omega)|),
-* line plots of (|J_z(\omega)|) at fixed (k_z).
+* $J_z(k_z,\omega)$ for 1D motion,
+* heatmap of $|J_z(k_z,\omega)|$,
+* line plots of $|J_z(\omega)|$ at fixed $k_z$.
 
 ### Phase 2 observables
 
-* transverse projected current (\mathbf J_\perp),
+* transverse projected current $\mathbf J_\perp$,
 * radiation intensity proxy
 
-[
+$$
 I(\omega,\hat{\mathbf n}) \propto |\mathbf J_\perp|^2,
-]
+$$
 
 * angular radiation maps,
 * frequency-resolved radiation patterns.
@@ -494,9 +492,9 @@ The next task will be to turn the above equations into a shorter derivation note
 
 The first code task will implement only the scalar 1D source-current transform:
 
-[
-J_z(k_z,\omega)=q\int dt,v(t)e^{-ik_z z(t)}e^{i\omega t}.
-]
+$$
+J_z(k_z,\omega)=q\int dt\,v(t)e^{-ik_z z(t)}e^{i\omega t}.
+$$
 
 with two benchmark trajectories:
 
@@ -505,7 +503,7 @@ with two benchmark trajectories:
 
 The first numerical checks will be:
 
-* ridge near (\omega=k_z v) for constant velocity,
+* ridge near $\omega=k_z v$ for constant velocity,
 * harmonic peaks for sinusoidal motion.
 
 We will not move to radiation extraction until those are correct.

@@ -144,9 +144,9 @@ That means the oscillatory benchmark is now validated at two levels:
 
 1. **kinematic level** — lines occur at integer multiples of $\omega_0$,
 2. **amplitude level** — relative line strengths follow the Bessel combination
-   $$
-   J_{n+1}(a)+J_{n-1}(a).
-   $$
+   
+   $J_{n+1}(a)+J_{n-1}(a)$.
+   
 
 This is exactly the kind of check a physicist should insist on before moving to the next layer.
 

@@ -24,11 +24,11 @@ To test whether the agreement is robust rather than cosmetic, we must inspect:
 
 ### 1. Residual in the fundamental angular profile
 
-For the normalized profiles at \(\omega=\omega_0\),
+For the normalized profiles at $\omega=\omega_0$,
 
-\[
+$$
 \Delta(\theta)=P_{\rm solver}(\theta)-P_{\rm ref}(\theta).
-\]
+$$
 
 This reveals differences that are invisible in a simple overlay plot.
 
@@ -36,17 +36,17 @@ This reveals differences that are invisible in a simple overlay plot.
 
 Use several fixed angles, for example:
 
-\[
+$$
 \theta=\pi/6,\quad \pi/4,\quad \pi/3.
-\]
+$$
 
 This avoids over-reliance on a single special geometry.
 
 ### 3. More than one amplitude
 
 Compare at two nonrelativistic amplitudes:
-- a moderate case with \(\omega_0 d/c = 0.3\),
-- a harder case with \(\omega_0 d/c = 0.5\).
+- a moderate case with $\omega_0 d/c = 0.3$,
+- a harder case with $\omega_0 d/c = 0.5$.
 
 The larger amplitude should still be nonrelativistic, but it should expose more visible deviations from the strict dipole picture.
 

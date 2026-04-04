@@ -12,25 +12,25 @@ This is the first direct comparison against an external radiation construction, 
 
 For nonrelativistic motion along the z-axis,
 
-\[
+$$
 \mathbf r_0(t)=z(t)\hat z,
-\]
+$$
 
-the far-field electric field in the observation direction \(\hat{\mathbf n}\) is proportional to the transverse part of the acceleration evaluated at retarded time.
+the far-field electric field in the observation direction $\hat{\mathbf n}$ is proportional to the transverse part of the acceleration evaluated at retarded time.
 
-For polar angle \(\theta\),
+For polar angle $\theta$,
 
-\[
+$$
 E_{\rm far}(t,\theta)\propto \sin\theta\,\ddot z(t_r),
 \qquad
 t_r=t-\frac{R}{c}.
-\]
+$$
 
 The retarded-time shift changes only the phase in frequency space, so for spectral-shape comparisons one may use the simpler reference signal
 
-\[
+$$
 E_{\rm ref}(t,\theta)\propto \sin\theta\,\ddot z(t).
-\]
+$$
 
 ---
 
@@ -38,26 +38,26 @@ E_{\rm ref}(t,\theta)\propto \sin\theta\,\ddot z(t).
 
 Define the time-domain reference spectrum by Fourier transforming the far-field signal:
 
-\[
+$$
 \tilde E_{\rm ref}(\omega,\theta)=\int dt\,E_{\rm ref}(t,\theta)e^{i\omega t}.
-\]
+$$
 
 Then define the reference spectral intensity
 
-\[
+$$
 I_{\rm ref}(\omega,\theta)\propto |\tilde E_{\rm ref}(\omega,\theta)|^2.
-\]
+$$
 
 This should be compared against the Fourier-domain solver observable
 
-\[
+$$
 I_{\rm spec}(\omega,\theta)
 \propto
 \omega^2\sin^2\theta
 \left|
 J_z\!\left(\frac{\omega}{c}\cos\theta,\omega\right)
 \right|^2.
-\]
+$$
 
 ---
 
@@ -79,11 +79,11 @@ Absolute normalization need not match, because the project solver currently omit
 
 Use sinusoidal motion
 
-\[
+$$
 z(t)=d\sin(\omega_0 t),
 \qquad
 \ddot z(t)=-d\omega_0^2\sin(\omega_0 t).
-\]
+$$
 
 This trajectory gives a clean comparison between:
 - Fourier-domain source-based radiation,
@@ -93,8 +93,8 @@ This trajectory gives a clean comparison between:
 
 ## What Task 6 should compute
 
-1. The Fourier-domain solver spectral map \(I_{\rm spec}(\omega,\theta)\).
-2. The time-domain reference spectral map \(I_{\rm ref}(\omega,\theta)\).
+1. The Fourier-domain solver spectral map $I_{\rm spec}(\omega,\theta)$.
+2. The time-domain reference spectral map $I_{\rm ref}(\omega,\theta)$.
 3. A comparison at selected angles.
 4. A comparison of the angular profile at the fundamental frequency.
 
