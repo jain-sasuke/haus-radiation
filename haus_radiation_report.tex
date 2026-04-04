@@ -1,0 +1,489 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage{titlesec}
+\setlength{\parskip}{0.55em}
+\setlength{\parindent}{0pt}
+\titleformat{\section}{\large\bfseries\color{black}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{black}}{\thesubsection}{0.5em}{}
+
+\title{\textbf{Fourier-Domain Radiation from Moving Charges}\\[0.3em]
+\large Simple progress report based on the Haus source formulation}
+\author{Nikhil Jain}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\href{https://github.com/jain-sasuke/haus-radiation}{\texttt{github.com/jain-sasuke/haus-radiation}}
+\end{center}
+
+\begin{abstract}
+This report summarizes a project built from the Fourier-domain moving-source formulation in Haus (1986). The central interest is not only how radiation appears, but also how to recognize when motion is effectively \textit{radiationless}. The practical question is: given a charge trajectory and an environment, can the framework separate non-radiating, weakly radiating, and clearly radiating regimes in a clean way? The work starts in vacuum, where uniform motion should not produce genuine finite-frequency radiation, then checks the dipole limit for oscillatory motion, and finally extends to a nondispersive medium where above-threshold angular enhancement appears once $n\beta>1$. A short hydrogen discussion is included at the end, not as a claim of direct orbital simulation, but as a careful dipole-transition bridge that can be corrected or refined in discussion.
+\end{abstract}
+
+\section{What this project is doing}
+
+The project asks one basic question:
+
+\textit{Given a trajectory, when is the motion genuinely radiating, and when is it effectively radiationless?}
+
+That question has two sides. One side is constructive: if radiation is present, what angular and spectral pattern comes out? The other side is eliminative: how do we avoid mistaking source structure, DC content, or finite-window artifacts for real radiation?
+
+Instead of starting from a ready-made radiation formula, the project starts from the moving source itself. The key object is the Fourier-domain current,
+\[
+J_z(k_z,\omega)=q\int dt\, v(t)\, e^{-ik_z z(t)} e^{i\omega t}.
+\]
+
+From there, the workflow is:
+
+\begin{enumerate}
+    \item compute the source spectrum,
+    \item keep only the parts that match propagating waves,
+    \item keep only the transverse part,
+    \item build a radiation observable in angle and frequency.
+\end{enumerate}
+
+This gives one framework that can handle:
+\begin{itemize}
+    \item motion that should be effectively radiationless in vacuum,
+    \item ordinary oscillatory radiation in vacuum,
+    \item richer off-axis harmonic structure beyond the simplest dipole picture,
+    \item changes caused by a medium,
+    \item threshold-style behavior when $n\beta>1$.
+\end{itemize}
+
+\section{Main idea from Haus}
+
+For a moving point charge, the current is written as a source and then Fourier transformed. For motion along $z$, the important quantity is
+\[
+J_z(k_z,\omega)=q\int dt\, v(t)e^{-ik_z z(t)}e^{i\omega t}.
+\]
+
+Radiation does not come from all of this source equally. It comes from the part that matches propagating modes.
+
+In vacuum:
+\[
+k=\omega/c.
+\]
+
+In a nondispersive medium:
+\[
+k=n\omega/c.
+\]
+
+For an observation angle $\theta$ and $z$-directed motion, this gives
+\[
+k_z=\frac{\omega}{c}\cos\theta \quad \text{(vacuum)},
+\qquad
+k_z=\frac{n\omega}{c}\cos\theta \quad \text{(medium)}.
+\]
+
+The project then uses a spectral far-field observable of the form
+\[
+I_{\text{spec}}(\omega,\theta)\propto \omega^2 \sin^2\theta
+\left|J_z(k_z,\omega)\right|^2,
+\]
+with the correct $k_z$ choice for vacuum or medium.
+
+\section{Project ladder and current status}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.24\textwidth} >{\raggedright\arraybackslash}p{0.58\textwidth} >{\raggedright\arraybackslash}p{0.11\textwidth}}
+\toprule
+Stage & What was checked & Status \\
+\midrule
+Source spectrum & Constant velocity and sinusoidal motion produce the expected Fourier structure & Complete \\
+Analytic check & Harmonic weights match the Bessel structure for sinusoidal motion & Complete \\
+Vacuum radiation & Angular geometry, symmetry, and non-radiating uniform motion in vacuum & Complete \\
+Dipole limit & Reduction to $\sin^2\theta$ and strong suppression of higher harmonics & Complete \\
+Reference check & Comparison against a standard nonrelativistic time-domain far-field reference & Complete \\
+Medium extension & Vacuum to medium deformation and continuity as $n\to1$ & Complete \\
+Threshold behavior & Above-threshold peak near the predicted Cherenkov angle & Complete \\
+Threshold law scan & Peak angle follows the predicted $\theta_C(\beta)$ curve above threshold & Complete \\
+\bottomrule
+\end{tabular}
+\caption{Current project status.}
+\end{table}
+
+\section{Key results}
+
+\subsection{1. Source spectrum is correct}
+
+The first step was to show that the source itself is being computed correctly. Constant velocity gives a narrow ridge along the expected kinematic line, while sinusoidal motion gives a harmonic ladder.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task1_constant_velocity_heatmap_hann.png}
+    \caption{Constant velocity source spectrum. The ridge follows the expected support relation.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task1_5_harmonic_weight_comparison.png}
+    \caption{Sinusoidal motion: numerical harmonic weights match the analytic Bessel-based prediction.}
+\end{subfigure}
+\caption{Task 1 and Task 1.5: the source spectrum is both numerically and analytically validated.}
+\end{figure}
+
+This matters because everything later depends on the source spectrum being right.
+
+\subsection{2. Radiationless motion in vacuum is filtered out, while true oscillatory radiation survives}
+
+A major concern in this project is false positives. A moving source always has some Fourier structure, but that does \emph{not} automatically mean there is real finite-frequency radiation. The most important negative benchmark is therefore uniform motion in vacuum: after removing the low-frequency/DC contamination, the remaining finite-frequency signal should be negligible. At the same time, genuinely oscillatory motion should still survive the same filtering.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task2_1_constant_velocity_filtered_map.png}
+    \caption{Constant velocity in vacuum after DC filtering. The finite-frequency signal is negligible, which is the correct radiationless benchmark.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task2_1_sinusoidal_filtered_map.png}
+    \caption{Sinusoidal motion under the same filtering still shows clear finite-frequency radiation.}
+\end{subfigure}
+\caption{Task 2.1: the framework separates radiationless uniform motion in vacuum from genuinely radiating oscillatory motion.}
+\end{figure}
+
+This distinction is central to the whole project. It shows that the code is not simply plotting source content; it is starting to distinguish ``motion with structure'' from ``motion with real radiative output.''
+
+\subsection{2.1 The dipole limit comes out correctly}
+
+Once real oscillatory radiation is isolated, the next strong check is to force the motion into the small-amplitude regime and see whether the framework reduces to ordinary dipole radiation. It does.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task5_fundamental_vs_sin2theta.png}
+    \caption{At the fundamental frequency, the angular pattern matches $\sin^2\theta$ very closely.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task5_1_angle_integrated_strengths.png}
+    \caption{Angle-integrated harmonic strengths: the fundamental dominates strongly in the dipole limit.}
+\end{subfigure}
+\caption{Task 5 and Task 5.1: after the radiationless benchmark is passed, the radiating limit reduces correctly to standard dipole radiation.}
+\end{figure}
+
+This is one of the most important validations in the whole project. If the method did not reduce to dipole radiation here, it would not be trustworthy.
+
+\subsection{3. The solver agrees with a standard time-domain reference, but not blindly}
+
+The project was also compared with a standard nonrelativistic time-domain far-field reference based on the acceleration. At first the agreement looked almost too clean, so a harder residual test was done.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task6_fundamental_profile_comparison.png}
+    \caption{Fundamental angular profile: solver and reference agree well after normalization.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task6_1_profile_residual_eps_0.500.png}
+    \caption{Residual at a harder amplitude. The mismatch is smooth and structured, not noisy or random.}
+\end{subfigure}
+\caption{Task 6 and Task 6.1: the solver agrees with the standard reference where it should, but also shows controlled departures when the fuller source phase matters.}
+\end{figure}
+
+The important point is that the solver does not just copy the simple reference. Off axis, and at larger amplitude, it retains extra harmonic structure coming from the full source phase $e^{-ik_z z(t)}$.
+
+\subsection{4. The medium extension behaves sensibly}
+
+The same framework was then extended from vacuum to a nondispersive medium. The medium does not destroy the pattern. Instead, it changes the off-axis harmonic redistribution in a structured way. Also, as $n\to1$, the result moves back smoothly to vacuum.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task7_fundamental_profile_comparison.png}
+    \caption{The normalized fundamental angular profile changes only slightly in the medium.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task7_off_axis_spectrum_comparison.png}
+    \caption{Off axis, the medium clearly redistributes spectral weight into stronger side harmonics.}
+\end{subfigure}
+\caption{Task 7: the medium extension is continuous, stable, and physically sensible.}
+\end{figure}
+
+This is exactly what should happen: the medium mainly changes how the source is sampled on the propagating manifold, which affects off-axis harmonics much more than the gross normalized dipole-like envelope.
+
+\subsection{5. Threshold-style behavior appears in the medium}
+
+This is the strongest result so far.
+
+For constant-velocity motion in a nondispersive medium, the source phase becomes
+\[
+e^{\,i\omega(1-n\beta\cos\theta)t}.
+\]
+
+This means enhancement should happen when
+\[
+1-n\beta\cos\theta \approx 0,
+\]
+which gives the predicted threshold angle
+\[
+\theta_C=\arccos\!\left(\frac{1}{n\beta}\right),
+\qquad \text{when } n\beta>1.
+\]
+
+That is exactly what the numerics show.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task8_threshold_angular_profiles.png}
+    \caption{Slow-resolution angular-strength scan for below-threshold, near-threshold, and above-threshold cases.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task8_above_threshold_map.png}
+    \caption{Slow-resolution above-threshold map for $n=1.5$ and $\beta=0.80$. The bright ridge lies close to the predicted angle.}
+\end{subfigure}
+\caption{Task 8: medium threshold behavior using the slower and better-resolved calculation.}
+\end{figure}
+
+For the clearly above-threshold case with $n=1.5$ and $\beta=0.80$,
+\[
+\theta_C=\arccos\!\left(\frac{1}{1.5\times 0.8}\right)\approx 0.5857 \text{ rad},
+\]
+while the numerical peak is at
+\[
+\theta_{\text{peak}}\approx 0.5890 \text{ rad}.
+\]
+
+The angle error is about
+\[
+3.36\times 10^{-3}\text{ rad}.
+\]
+
+For the near-threshold case $\beta=0.68$, the slower calculation gives $\theta_C\approx 0.1984$ rad and $\theta_{\text{peak}}\approx 0.2094$ rad, with an error of about $1.11\times 10^{-2}$ rad. This case is still broader and less exact than the more clearly super-threshold case, which is expected close to threshold. The safer conclusion is therefore not that the code gives an exact Cherenkov solution in every regime, but that it shows the correct onset of a threshold-locked enhancement and reproduces the predicted angle well once the motion is clearly above threshold.
+
+\subsection{6. The threshold-angle law is also reproduced across a parameter scan}
+
+One good above-threshold example is useful, but it is not enough. A stronger test is to change $\beta$ above threshold and ask whether the numerical peak angle follows the predicted law
+\[
+\theta_C(\beta)=\arccos\!\left(\frac{1}{n\beta}\right).
+\]
+
+That is what was done in Task 8.1 for $n=1.5$ and
+\[
+\beta = 0.68,\ 0.72,\ 0.76,\ 0.80,\ 0.85,\ 0.90.
+\]
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task8_1_predicted_vs_numerical_angle.png}
+    \caption{Predicted threshold angle and numerical peak angle versus $\beta$.}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{task8_1_angle_error_scan.png}
+    \caption{Angle error is largest just above threshold and remains small for clearly super-threshold cases.}
+\end{subfigure}
+\caption{Task 8.1: the numerical peak angle follows the expected threshold-angle law across a range of super-threshold velocities.}
+\end{figure}
+
+The important pattern is simple:
+\begin{itemize}
+    \item the numerical peak angle increases with $\beta$ in the same way as the predicted $\theta_C(\beta)$,
+    \item the largest error occurs very near threshold at $\beta=0.68$,
+    \item once the motion is more clearly above threshold, the error stays small, typically at the level of a few $10^{-3}$ rad.
+\end{itemize}
+
+For example:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$\beta$ & $\theta_C$ (pred.) & $\theta_{\text{peak}}$ (num.) & absolute error \\
+\midrule
+0.72 & 0.3873 & 0.3927 & $5.38\times10^{-3}$ \\
+0.76 & 0.5008 & 0.5027 & $1.84\times10^{-3}$ \\
+0.80 & 0.5857 & 0.5812 & $4.49\times10^{-3}$ \\
+0.85 & 0.6692 & 0.6754 & $6.24\times10^{-3}$ \\
+0.90 & 0.7366 & 0.7383 & $1.65\times10^{-3}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+So Task 8.1 is a stronger validation than Task 8 alone. It does not prove a full dielectric radiation theory, but it does show that within the present nondispersive benchmark model, the peak angle follows the expected threshold law over a useful super-threshold range.
+
+\section{Hydrogen angle: what this project can and cannot say}
+
+A natural question is whether this project can be compared with hydrogen.
+
+The careful answer is: \textbf{yes, but only at the dipole-transition level, not as a literal hydrogen-orbital simulator.}
+
+This project treats a \textbf{classical moving source}. A hydrogen orbital is a \textbf{quantum state}, not a definite classical path. So the project should \textbf{not} be described as simulating a 1s, 2p, or 3d orbital directly.
+
+The meaningful connection is through the dipole limit and through the geometry of electric-dipole transitions.
+
+\subsection*{The safe connection}
+
+When the classical motion is small enough, the solver reduces to
+\[
+I(\theta)\propto \sin^2\theta.
+\]
+
+That is the standard dipole radiation envelope for a dipole aligned along one axis. In quantum atomic physics, dipole-allowed transitions are controlled by the dipole matrix element
+\[
+\langle f|\hat{\mathbf{r}}|i\rangle,
+\]
+so the emitted radiation is also organized by dipole geometry.
+
+This gives a useful bridge:
+\begin{itemize}
+    \item the present solver is classical,
+    \item hydrogen transitions are quantum,
+    \item but both share the same dipole-emission logic in the appropriate limit.
+\end{itemize}
+
+\subsection*{The viewpoint being suggested}
+
+The viewpoint behind this project is the following.
+
+\begin{enumerate}
+    \item A moving source creates a structured Fourier spectrum.
+    \item Radiation appears when that source matches propagating modes.
+    \item In the small-amplitude limit, this reduces to dipole radiation.
+    \item Dipole radiation is also the leading language for many atomic transitions, including familiar hydrogen transitions such as $2p\to1s$.
+\end{enumerate}
+
+So the hydrogen connection is not ``this code simulates a hydrogen orbital.''
+It is instead:
+
+\begin{quote}
+This code reproduces the classical dipole-emission geometry that forms the simplest semiclassical bridge to dipole-allowed atomic emission.
+\end{quote}
+
+\subsection*{What this may still be useful for}
+
+Even though this is not a hydrogen-orbital solver, it can still help organize intuition in a useful way.
+
+For example, it can help discuss:
+\begin{itemize}
+    \item why dipole-like radiation has a $\sin^2\theta$ envelope,
+    \item how source structure maps into harmonic structure,
+    \item how a simple classical picture and a quantum transition picture can agree at the level of angular emission geometry while differing in the underlying physics.
+\end{itemize}
+
+\subsection*{What is deliberately not being claimed}
+
+This report is \textbf{not} claiming:
+\begin{itemize}
+    \item that a stationary hydrogen orbital radiates like a classical orbit,
+    \item that this code computes hydrogen eigenstates,
+    \item that the present model replaces quantum transition theory.
+\end{itemize}
+
+The honest claim is much narrower and safer: the project gives a clean classical framework whose dipole limit provides a natural comparison point for the angular logic of dipole-allowed hydrogen emission.
+
+This is exactly the point where correction or guidance from a professor would be valuable, because the project is trying to keep the bridge physically honest rather than overstate it.
+
+\section{What is physically established now}
+
+At this stage, the project supports the following moderate claims:
+
+\begin{enumerate}
+    \item The Fourier-domain source spectrum for the moving charge is implemented correctly.
+    \item In vacuum, uniform motion does not produce a meaningful finite-frequency radiative signal once the low-frequency contamination is removed; this is the main radiationless benchmark.
+    \item When the motion is genuinely oscillatory, the framework produces stable finite-frequency radiation and reduces to ordinary dipole radiation in the small-amplitude limit.
+    \item The fuller source-based method contains extra off-axis harmonic structure beyond the simplest acceleration-only reference.
+    \item The medium extension is continuous and physically sensible.
+    \item Above threshold in a medium, the solver develops angular enhancement near the phase-matching angle predicted by
+    \[
+    \cos\theta_C=\frac{1}{n\beta}.
+    \]
+    \item Across a super-threshold scan, the numerical peak angle follows the expected threshold law
+    \[
+    \theta_C(\beta)=\arccos\!\left(\frac{1}{n\beta}\right).
+    \]
+\end{enumerate}
+
+\section{What is not claimed yet}
+
+This report should still be read honestly.
+
+The project does \textbf{not} yet claim:
+
+\begin{itemize}
+    \item final absolute power normalization,
+    \item full relativistic Lienard--Wiechert benchmarking,
+    \item a complete dielectric electrodynamics theory for arbitrary materials,
+    \item a direct quantum hydrogen-orbital solver.
+\end{itemize}
+
+The current work is a strong physics-based computational framework, but it is still a staged benchmark program.
+
+\section{Why this is interesting}
+
+The project is not just reproducing one textbook result. Its real value is that it gives one common language for both sides of the problem:
+
+\begin{itemize}
+    \item identifying motion that is effectively radiationless,
+    \item describing vacuum dipole-like radiation when it is present,
+    \item tracking structured harmonic emission beyond the strict dipole limit,
+    \item following medium-induced spectral redistribution,
+    \item and locating threshold-style angular locking in a medium.
+\end{itemize}
+
+In other words, it treats source motion, angular emission, harmonic structure, medium effects, and radiationless benchmarks inside one Fourier-domain framework.
+
+\section{What the end goal can become}
+
+The end goal is a forward model that can answer, in simple terms:
+
+\begin{quote}
+Given a trajectory and an environment, is the motion effectively radiationless or genuinely radiative, and if it radiates, where and at what frequencies?
+\end{quote}
+
+A stronger future version can then be pushed toward:
+\begin{itemize}
+    \item inverse problems: recover motion from radiation data,
+    \item fast surrogates or SciML acceleration,
+    \item more realistic media or dispersive extensions,
+    \item a cleaner semiclassical comparison layer for dipole-like atomic transitions.
+\end{itemize}
+
+\section{Conclusion}
+
+The project has reached a useful intermediate stage.
+
+The most important conceptual point is that the framework is beginning to separate \emph{radiationless motion} from genuinely radiating motion. In vacuum, uniform motion does not survive as a meaningful finite-frequency radiative signal once the low-frequency contamination is removed, while oscillatory motion does. In the small-amplitude limit, that oscillatory radiation reduces to the expected dipole pattern. Beyond the simplest limit, the source-phase formulation also shows extra controlled structure that is absent in the most minimal acceleration-only picture.
+
+In a nondispersive medium, the same framework remains stable, varies continuously as $n\to1$, and develops threshold-style angular enhancement above $n\beta>1$. The strongest medium result is the clearly super-threshold case, where the numerical peak lies very close to the angle predicted by
+\[
+\theta_C(\beta)=\arccos\!\left(\frac{1}{n\beta}\right).
+\]
+The parameter scan then shows that this is not just one isolated match: over a useful super-threshold range, the peak angle follows the same law with only modest error away from the threshold edge.
+
+The hydrogen connection should still be presented carefully. The solver is not a hydrogen-orbital code. What it offers is a clean classical framework whose dipole-limit behavior gives a useful and physically honest bridge to the angular logic of dipole-like atomic emission and transitions such as $2p\to1s$.
+
+\end{document}
